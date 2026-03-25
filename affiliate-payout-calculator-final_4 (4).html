@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Affiliate Payout Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:             #ffffff;
+      --card-bg:        #ffffff;
+      --ink:            #000000;
+      --muted:          #444444;
+      --border:         rgba(0,0,0,0.12);
+      --row-hover:      #f9f6f2;
+      --thead-bg:       #f4f1ed;
+      --surface:        #f4f1ed;
+      --cream:          #f7f3ee;
+      --sand-light:     #f0ebe3;
+
+      --teal:           #2d6e72;
+      --teal-deep:      #1b4a4d;
+      --teal-text:      #ffffff;
+      --teal-label:     rgba(255,255,255,0.72);
+
+      --terra:          #c4593a;
+      --terra-text:     #ffffff;
+      --terra-label:    rgba(255,255,255,0.72);
+
+      --sand:           #d4c4ae;
+      --sand-text:      #1e1e1c;
+      --sand-label:     #6b5e50;
+
+      --stone:          #9a9590;
+      --stone-text:     #ffffff;
+      --stone-label:    rgba(255,255,255,0.72);
+
+      --charcoal:       #1e1e1c;
+      --charcoal-text:  #f0ebe3;
+      --charcoal-label: #c4593a;
+
+      --btn-bg:         #1b4a4d;
+      --btn-text:       #f0ebe3;
+      --btn-hover:      #2d6e72;
+
+      --badge-l1-bg:    #2d6e72;
+      --badge-l1-txt:   #ffffff;
+      --badge-l2-bg:    #c4593a;
+      --badge-l2-txt:   #ffffff;
+      --badge-l3-bg:    #9a9590;
+      --badge-l3-txt:   #ffffff;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:             #141412;
+        --card-bg:        #1e1e1c;
+        --ink:            #f0ebe3;
+        --muted:          #9a9590;
+        --border:         rgba(255,255,255,0.10);
+        --row-hover:      #252522;
+        --thead-bg:       #1a1a18;
+        --surface:        #1a1a18;
+        --cream:          #252522;
+        --sand-light:     #1e1c18;
+
+        --teal:           #1b4a4d;
+        --teal-deep:      #0f2e30;
+        --teal-text:      #9FE1CB;
+        --teal-label:     rgba(159,225,203,0.6);
+
+        --terra:          #7a2f1c;
+        --terra-text:     #f0b49a;
+        --terra-label:    rgba(240,180,154,0.6);
+
+        --sand:           #3a3228;
+        --sand-text:      #d4c4ae;
+        --sand-label:     #9a9590;
+
+        --stone:          #3d3a36;
+        --stone-text:     #c8c2bb;
+        --stone-label:    rgba(200,194,187,0.6);
+
+        --charcoal:       #2d2d2a;
+        --charcoal-text:  #f0ebe3;
+        --charcoal-label: #d4704f;
+
+        --btn-bg:         #1b4a4d;
+        --btn-text:       #9FE1CB;
+        --btn-hover:      #2d6e72;
+
+        --badge-l1-bg:    #1b4a4d;
+        --badge-l1-txt:   #9FE1CB;
+        --badge-l2-bg:    #7a2f1c;
+        --badge-l2-txt:   #f0b49a;
+        --badge-l3-bg:    #3d3a36;
+        --badge-l3-txt:   #c8c2bb;
+      }
+    }
+
+    body { font-family: 'Titillium Web', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; transition: background 0.2s, color 0.2s; }
+
+    /* ─── CALCULATOR ─────────────────────────────── */
+    .calc-page { padding: 2.5rem 1.5rem; }
+    .app { max-width: 880px; margin: 0 auto; }
+
+    .header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .header h1 { font-size: 26px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+    .header p { font-size: 11px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+    .header-row { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+    .manual-btn {
+      background: var(--btn-bg); color: var(--btn-text); border: none; border-radius: 2px;
+      padding: 8px 18px; font-family: 'Titillium Web', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.15s; white-space: nowrap;
+    }
+    .manual-btn:hover { background: var(--btn-hover); }
+
+    .main-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 2rem; margin-bottom: 1.5rem; }
+    .section-label { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 1.25rem; }
+    .inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 16px; margin-bottom: 2rem; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 9px; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+    .field input, .field select { background: var(--bg); border: 1px solid var(--border); border-radius: 2px; padding: 10px 12px; font-family: 'Titillium Web', sans-serif; font-size: 13px; color: var(--ink); outline: none; transition: border-color 0.15s; }
+    .field input::placeholder { color: var(--muted); }
+    .field input:focus, .field select:focus { border-color: var(--teal); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 1.75rem; }
+    .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+    .result-box { border-radius: 3px; padding: 16px 18px; }
+    .result-box .rlabel { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+    .result-box .rval { font-size: 22px; font-weight: 300; letter-spacing: 0.02em; }
+    .result-box.l1     { background: var(--teal); }
+    .result-box.l1     .rlabel { color: var(--teal-label); }
+    .result-box.l1     .rval   { color: var(--teal-text); }
+    .result-box.l2     { background: var(--terra); }
+    .result-box.l2     .rlabel { color: var(--terra-label); }
+    .result-box.l2     .rval   { color: var(--terra-text); }
+    .result-box.l3     { background: var(--sand); border: 1px solid var(--border); }
+    .result-box.l3     .rlabel { color: var(--sand-label); }
+    .result-box.l3     .rval   { color: var(--sand-text); }
+    .result-box.payout { background: var(--stone); }
+    .result-box.payout .rlabel { color: var(--stone-label); }
+    .result-box.payout .rval   { color: var(--stone-text); }
+    .result-box.net    { background: var(--charcoal); }
+    .result-box.net    .rlabel { color: var(--charcoal-label); font-weight: 700; }
+    .result-box.net    .rval   { color: var(--charcoal-text); font-weight: 600; }
+
+    .history-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .history-header { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--thead-bg); }
+    .history-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; color: var(--ink); }
+    .save-btn { background: var(--btn-bg); color: var(--btn-text); border: none; border-radius: 2px; padding: 8px 18px; font-family: 'Titillium Web', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
+    .save-btn:hover { background: var(--btn-hover); }
+    .save-btn:active { transform: scale(0.97); }
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead tr { background: var(--thead-bg); }
+    th { padding: 10px 14px; text-align: left; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; white-space: nowrap; }
+    td { padding: 12px 14px; border-top: 1px solid var(--border); white-space: nowrap; color: var(--ink); }
+    tr:hover td { background: var(--row-hover); }
+    .tier-badge { display: inline-block; padding: 3px 10px; border-radius: 2px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
+    .tier-L1 { background: var(--badge-l1-bg); color: var(--badge-l1-txt); }
+    .tier-L2 { background: var(--badge-l2-bg); color: var(--badge-l2-txt); }
+    .tier-L3 { background: var(--badge-l3-bg); color: var(--badge-l3-txt); }
+    .del-btn { background: none; border: 1px solid var(--border); border-radius: 2px; padding: 4px 10px; cursor: pointer; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-family: 'Titillium Web', sans-serif; transition: border-color 0.12s, color 0.12s; }
+    .del-btn:hover { border-color: var(--terra); color: var(--terra); }
+    .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 12px; }
+    .empty span { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+    tr.group-row td { background: var(--thead-bg); font-weight: 700; cursor: pointer; user-select: none; border-top: 2px solid var(--border); }
+    tr.group-row:hover td { filter: brightness(0.97); }
+    tr.group-row.single td { font-weight: 400; cursor: default; background: var(--card-bg); border-top: 1px solid var(--border); }
+    tr.group-row.single:hover td { background: var(--row-hover); }
+    .toggle-arrow { display: inline-block; font-size: 10px; margin-right: 6px; transition: transform 0.2s; color: var(--teal); }
+    .toggle-arrow.open { transform: rotate(90deg); }
+    .count-pill { display: inline-block; background: var(--teal); color: var(--teal-text); border-radius: 10px; padding: 1px 8px; font-size: 10px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+    tr.sub-row td { background: var(--card-bg); font-size: 12px; border-top: 1px solid var(--border); }
+    tr.sub-row td:first-child { padding-left: 28px; }
+    tr.sub-row:hover td { background: var(--row-hover); }
+    tr.sub-row.hidden { display: none; }
+
+    /* ─── MANUAL PANEL ───────────────────────────── */
+    #manual-panel { display: none; border-top: 3px solid var(--teal); background: var(--bg); }
+    #manual-panel.open { display: block; }
+
+    .manual-topbar { position: sticky; top: 0; z-index: 100; background: var(--card-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 48px; }
+    .manual-topbar-title { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .close-manual-btn { background: var(--btn-bg); color: var(--btn-text); border: none; border-radius: 2px; padding: 6px 14px; font-family: 'Titillium Web', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.15s; }
+    .close-manual-btn:hover { background: var(--btn-hover); }
+
+    .manual-cover { background: var(--bg); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem; position: relative; overflow: hidden; }
+    .manual-cover::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--teal); }
+    .manual-cover::after  { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: var(--terra); }
+    .mc-label    { font-size: 10px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--stone); margin-bottom: 10px; }
+    .mc-title    { font-size: 32px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink); line-height: 1.15; }
+    .mc-rule     { width: 100px; height: 1px; background: var(--teal); margin: 20px auto; }
+    .mc-sub      { font-size: 14px; font-weight: 300; color: var(--teal-deep); margin-bottom: 6px; }
+    .mc-sublabel { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone); }
+    .mc-footer-rule { width: 100%; max-width: 600px; height: 1px; background: var(--sand); margin: 40px auto 14px; }
+    .mc-footer-text { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); }
+
+    .manual-body { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+
+    .m-toc-head { background: var(--teal); padding: 10px 14px; border-radius: 3px 3px 0 0; }
+    .m-toc-head span { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #fff; }
+    .m-toc-list { list-style: none; border: 1px solid var(--border); border-top: none; border-radius: 0 0 3px 3px; overflow: hidden; }
+    .m-toc-list li { border-bottom: 1px solid var(--border); }
+    .m-toc-list li:last-child { border-bottom: none; }
+    .m-toc-list a { display: flex; gap: 12px; align-items: center; padding: 9px 14px; text-decoration: none; color: var(--ink); font-size: 12px; transition: background 0.12s; background: var(--card-bg); }
+    .m-toc-list a:hover { background: var(--surface); }
+    .m-toc-num { font-weight: 700; font-size: 12px; min-width: 18px; color: var(--teal); }
+
+    .m-section { margin: 2.5rem 0 1rem; display: flex; align-items: stretch; }
+    .m-section-bar { width: 4px; background: var(--teal); border-radius: 2px; flex-shrink: 0; }
+    .m-section-body { padding: 4px 12px; }
+    .m-section-num { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terra); margin-bottom: 2px; }
+    .m-section-title { font-size: 17px; font-weight: 700; color: var(--ink); }
+
+    .m-body   { font-size: 13px; line-height: 1.7; color: var(--ink); margin-bottom: 10px; text-align: justify; }
+    .m-h2     { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--teal-deep); margin: 14px 0 6px; text-transform: uppercase; }
+    .m-note   { font-size: 11px; font-style: italic; color: var(--stone); margin-top: 6px; }
+    .m-bullet { font-size: 13px; line-height: 1.6; color: var(--ink); padding-left: 14px; position: relative; margin-bottom: 4px; }
+    .m-bullet::before { content: '–'; position: absolute; left: 0; color: var(--teal); }
+
+    .m-cblock  { border-radius: 3px; padding: 9px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 10px 0; line-height: 1.5; }
+    .mcb-sand  { background: var(--sand); color: var(--sand-text); }
+    .mcb-terra { background: var(--terra); color: var(--terra-text); }
+
+    .m-tbl-wrap { overflow-x: auto; margin: 8px 0 12px; }
+    .m-tbl-wrap table { font-size: 12px; }
+    .m-tbl-wrap td { white-space: normal; }
+    .m-tbl-wrap tr:nth-child(even) td { background: var(--cream); }
+    .m-tbl-wrap tr:nth-child(odd)  td { background: var(--sand-light); }
+    .mth-teal     th { background: var(--teal-deep); color: #fff; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 10px; }
+    .mth-terra    th { background: var(--terra);     color: #fff; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 10px; }
+    .mth-charcoal th { background: var(--charcoal);  color: var(--charcoal-text); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 7px 10px; }
+
+    .m-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 10px 0; }
+    .m-card  { border-radius: 3px; padding: 10px 10px; }
+    .m-card .mcl { font-size: 7px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+    .m-card .mcv { font-size: 14px; font-weight: 300; }
+    .mcp-teal     { background: var(--teal); }
+    .mcp-teal     .mcl { color: rgba(255,255,255,0.7); } .mcp-teal     .mcv { color: #fff; }
+    .mcp-terra    { background: var(--terra); }
+    .mcp-terra    .mcl { color: rgba(255,255,255,0.7); } .mcp-terra    .mcv { color: #fff; }
+    .mcp-sand     { background: var(--sand); border: 1px solid var(--border); }
+    .mcp-sand     .mcl { color: var(--sand-label); }     .mcp-sand     .mcv { color: var(--sand-text); }
+    .mcp-stone    { background: var(--stone); }
+    .mcp-stone    .mcl { color: rgba(255,255,255,0.7); } .mcp-stone    .mcv { color: #fff; }
+    .mcp-charcoal { background: var(--charcoal); border: 2px solid var(--teal); }
+    .mcp-charcoal .mcl { color: var(--terra-label); font-weight: 700; }
+    .mcp-charcoal .mcv { color: var(--charcoal-text); font-weight: 600; }
+
+    .m-step { margin-bottom: 10px; }
+    .m-step-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); margin-bottom: 3px; }
+    .m-step-body  { font-size: 12px; line-height: 1.6; color: var(--ink); }
+
+    .m-faq   { margin-bottom: 14px; }
+    .m-faq-q { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .m-faq-a { font-size: 12px; line-height: 1.6; color: var(--ink); }
+
+    .m-footer   { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1rem; text-align: center; }
+    .m-footer p { font-size: 10px; color: var(--stone); letter-spacing: 0.05em; }
+
+    @media (max-width: 600px) { .m-cards { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ CALCULATOR ═══════════════ -->
+<div class="calc-page">
+  <div class="app">
+    <div class="header">
+      <div class="header-row">
+        <div>
+          <h1>AFFILIATE PAYOUT CALCULATOR</h1>
+          <p>L1 · L2 · L3 Introducer Earnings &nbsp;·&nbsp; Live Calculation</p>
+        </div>
+        <button class="manual-btn" onclick="toggleManual()">User Manual ↓</button>
+      </div>
+    </div>
+
+    <div class="main-card">
+      <div class="section-label">Inputs — results update instantly</div>
+      <div class="inputs-grid">
+        <div class="field"><label>Client Name</label><input type="text" id="clientName" placeholder="e.g. John Doe" /></div>
+        <div class="field"><label>Service</label><select id="service"><option value="Signature">Signature</option><option value="Premium">Premium</option></select></div>
+        <div class="field"><label>Status</label><select id="status"><option value="Full Sign-Up">Full Sign-Up</option><option value="Deposit Only">Deposit Only</option></select></div>
+        <div class="field"><label>Introducer Tier</label><select id="tier"><option value="L1">L1</option><option value="L2">L2</option><option value="L3">L3</option></select></div>
+        <div class="field"><label>Tattoo Price ($)</label><input type="number" id="price" placeholder="e.g. 3000" min="0" /></div>
+      </div>
+      <hr class="divider" />
+      <div class="section-label">Results</div>
+      <div class="results-grid">
+        <div class="result-box l1"><div class="rlabel">L1 Earnings</div><div class="rval" id="r-l1">$0</div></div>
+        <div class="result-box l2"><div class="rlabel">L2 Earnings</div><div class="rval" id="r-l2">$0</div></div>
+        <div class="result-box l3"><div class="rlabel">L3 Earnings</div><div class="rval" id="r-l3">$0</div></div>
+        <div class="result-box payout"><div class="rlabel">Total Payout</div><div class="rval" id="r-payout">$0</div></div>
+        <div class="result-box net"><div class="rlabel">Company Net Revenue</div><div class="rval" id="r-net">$0</div></div>
+      </div>
+    </div>
+
+    <div class="history-card">
+      <div class="history-header">
+        <span class="history-title">Saved Clients</span>
+        <button class="save-btn" onclick="saveClient()">+ Save Current</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Client</th><th>Service</th><th>Status</th><th>Tier</th><th>Price</th><th>L1</th><th>L2</th><th>L3</th><th>Payout</th><th>Net</th><th></th></tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MANUAL PANEL ═══════════════ -->
+<div id="manual-panel">
+
+  <div class="manual-topbar">
+    <span class="manual-topbar-title">Affiliate Payout Calculator — User Manual</span>
+    <button class="close-manual-btn" onclick="toggleManual()">✕ Close Manual</button>
+  </div>
+
+  <div class="manual-cover">
+    <div class="mc-label">Affiliate</div>
+    <div class="mc-title">PAYOUT CALCULATOR</div>
+    <div class="mc-rule"></div>
+    <div class="mc-sub">User Manual</div>
+    <div class="mc-sublabel">L1 · L2 · L3 Introducer Earnings System</div>
+    <div class="mc-footer-rule"></div>
+    <div class="mc-footer-text">For internal use · Tattoo Studio Operations</div>
+  </div>
+
+  <div class="manual-body">
+
+    <div class="m-toc-head"><span>Table of Contents</span></div>
+    <ul class="m-toc-list">
+      <li><a href="#ms1"><span class="m-toc-num">1.</span> Overview</a></li>
+      <li><a href="#ms2"><span class="m-toc-num">2.</span> Understanding the Tier System</a></li>
+      <li><a href="#ms3"><span class="m-toc-num">3.</span> The Calculator Interface</a></li>
+      <li><a href="#ms4"><span class="m-toc-num">4.</span> How to Use the Calculator</a></li>
+      <li><a href="#ms5"><span class="m-toc-num">5.</span> Understanding the Results</a></li>
+      <li><a href="#ms6"><span class="m-toc-num">6.</span> Saving &amp; Managing Client Records</a></li>
+      <li><a href="#ms7"><span class="m-toc-num">7.</span> Payout Logic Reference</a></li>
+      <li><a href="#ms8"><span class="m-toc-num">8.</span> Frequently Asked Questions</a></li>
+    </ul>
+
+    <!-- S1 -->
+    <div class="m-section" id="ms1"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 1</div><div class="m-section-title">Overview</div></div></div>
+    <p class="m-body">The Affiliate Payout Calculator is a web-based tool designed to help the tattoo studio quickly and accurately calculate commission earnings for introducers across three tiers — L1, L2, and L3. It mirrors the logic previously managed in a spreadsheet, but works directly in any web browser with no installation required.</p>
+    <p class="m-body">Results update automatically as you type — just like a live spreadsheet — so there is no need to click a "calculate" button. Once you are happy with a scenario, you can save it to a running log of client records at the bottom of the page.</p>
+    <div class="m-cblock mcb-sand">KEY BENEFITS</div>
+    <p class="m-bullet"><strong>Live calculation</strong> — Results appear instantly as inputs change — no manual refresh needed.</p>
+    <p class="m-bullet"><strong>Browser-based</strong> — Works on any device with a modern browser. No software to install.</p>
+    <p class="m-bullet"><strong>Dark &amp; Light mode</strong> — Automatically adapts to your system colour preference.</p>
+    <p class="m-bullet"><strong>Client log</strong> — Save and review multiple client scenarios in a single session.</p>
+    <p class="m-bullet"><strong>Accurate logic</strong> — All payout rules are encoded directly from the original spreadsheet.</p>
+
+    <!-- S2 -->
+    <div class="m-section" id="ms2"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 2</div><div class="m-section-title">Understanding the Tier System</div></div></div>
+    <p class="m-body">The studio operates a three-level affiliate introducer programme. When a client books through an introducer, that person earns a commission based on their tier level. Higher tiers (L2, L3) also trigger smaller secondary commissions for introducers above them in the chain.</p>
+    <div class="m-tbl-wrap"><table><thead class="mth-teal"><tr><th>Tier</th><th>Role</th><th>Earns On</th><th>Also Triggers</th></tr></thead><tbody>
+      <tr><td><strong>L1</strong></td><td>Direct introducer</td><td>Their own referrals only</td><td>Nothing</td></tr>
+      <tr><td><strong>L2</strong></td><td>Mid-tier introducer</td><td>Their own referrals</td><td>L1 earns a secondary cut</td></tr>
+      <tr><td><strong>L3</strong></td><td>Senior introducer</td><td>Their own referrals</td><td>Both L1 and L2 earn secondary cuts</td></tr>
+    </tbody></table></div>
+    <p class="m-note">Note: Secondary commissions are only triggered on Full Sign-Up bookings, not Deposit Only.</p>
+
+    <!-- S3 -->
+    <div class="m-section" id="ms3"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 3</div><div class="m-section-title">The Calculator Interface</div></div></div>
+    <p class="m-body">The calculator is divided into two main areas: the <strong>input and results panel</strong> at the top, and the <strong>saved clients log</strong> at the bottom.</p>
+    <div class="m-h2">3.1 &nbsp; Input Fields</div>
+    <p class="m-body">The top section contains five input fields. Every field change triggers an immediate recalculation.</p>
+    <div class="m-tbl-wrap"><table><thead class="mth-teal"><tr><th>Field</th><th>Options</th><th>Description</th></tr></thead><tbody>
+      <tr><td><strong>Client Name</strong></td><td>Free text</td><td>For identification only. Does not affect calculations.</td></tr>
+      <tr><td><strong>Service</strong></td><td>Signature / Premium</td><td>The type of tattoo service booked. Signature commands higher base payouts.</td></tr>
+      <tr><td><strong>Status</strong></td><td>Full Sign-Up / Deposit Only</td><td>Whether the client paid in full or only left a deposit. Strongly affects earnings.</td></tr>
+      <tr><td><strong>Introducer Tier</strong></td><td>L1 / L2 / L3</td><td>The tier level of the person who introduced the client.</td></tr>
+      <tr><td><strong>Tattoo Price ($)</strong></td><td>Numeric value</td><td>The agreed price of the tattoo. Used to calculate percentage-based commissions.</td></tr>
+    </tbody></table></div>
+    <div class="m-h2">3.2 &nbsp; Result Cards</div>
+    <p class="m-body">Below the inputs, five coloured cards display the live calculation results, each colour-coded to the calculator's brand palette:</p>
+    <div class="m-cards">
+      <div class="m-card mcp-teal"><div class="mcl">L1 Earnings</div><div class="mcv">$210</div></div>
+      <div class="m-card mcp-terra"><div class="mcl">L2 Earnings</div><div class="mcv">$210</div></div>
+      <div class="m-card mcp-sand"><div class="mcl">L3 Earnings</div><div class="mcv">$1,150</div></div>
+      <div class="m-card mcp-stone"><div class="mcl">Total Payout</div><div class="mcv">$1,570</div></div>
+      <div class="m-card mcp-charcoal"><div class="mcl">Company Net Revenue</div><div class="mcv">$7,430</div></div>
+    </div>
+    <p class="m-bullet"><strong>L1 Earnings</strong> — Commission paid to the L1 introducer in the chain.</p>
+    <p class="m-bullet"><strong>L2 Earnings</strong> — Commission paid to the L2 introducer (if applicable).</p>
+    <p class="m-bullet"><strong>L3 Earnings</strong> — Commission paid to the L3 introducer (if applicable).</p>
+    <p class="m-bullet"><strong>Total Payout</strong> — Sum of all affiliate commissions for this booking.</p>
+    <p class="m-bullet"><strong>Company Net Revenue</strong> — What the studio retains after all commissions are paid.</p>
+
+    <!-- S4 -->
+    <div class="m-section" id="ms4"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 4</div><div class="m-section-title">How to Use the Calculator</div></div></div>
+    <p class="m-body">Follow these steps each time you need to calculate a payout:</p>
+    <div class="m-step"><div class="m-step-title">Step 1 — Open the file</div><div class="m-step-body">Open this HTML file in any modern web browser (Chrome, Safari, Firefox, Edge).</div></div>
+    <div class="m-step"><div class="m-step-title">Step 2 — Enter the client name</div><div class="m-step-body">Type the client's name in the Client Name field. This is for record-keeping only and does not affect any calculation.</div></div>
+    <div class="m-step"><div class="m-step-title">Step 3 — Select the service type</div><div class="m-step-body">Choose either Signature or Premium. Signature services have higher base commission rates than Premium.</div></div>
+    <div class="m-step"><div class="m-step-title">Step 4 — Select the booking status</div><div class="m-step-body">Choose Full Sign-Up if the client has paid in full, or Deposit Only if they have only paid a holding deposit. This is the single most impactful field — deposit-only bookings pay flat commissions, while full sign-ups pay base amounts plus a percentage of the tattoo price.</div></div>
+    <div class="m-step"><div class="m-step-title">Step 5 — Select the introducer tier</div><div class="m-step-body">Choose L1, L2, or L3. This determines which result cards show non-zero values and whether secondary commissions are triggered.</div></div>
+    <div class="m-step"><div class="m-step-title">Step 6 — Enter the tattoo price</div><div class="m-step-body">Type the agreed tattoo price in dollars. For Full Sign-Up bookings, a percentage of this amount is added to the base commission. For Deposit Only, this field has no effect.</div></div>
+    <div class="m-step"><div class="m-step-title">Step 7 — Read the results</div><div class="m-step-body">The five coloured result cards update instantly. Review each tier's earnings, the total payout, and the company net revenue.</div></div>
+    <div class="m-step"><div class="m-step-title">Step 8 — Save if needed</div><div class="m-step-body">Click <strong>+ Save Current</strong> to add this client to the session log. Multiple entries for the same client name are automatically grouped into a single summary row showing combined totals — click the row to expand or collapse the individual entries.</div></div>
+    <div class="m-cblock mcb-sand" style="font-style:italic;font-weight:400;letter-spacing:0.02em;text-transform:none;">TIP: You do not need to clear the form between clients. Simply update any field and the results refresh immediately.</div>
+
+    <!-- S5 -->
+    <div class="m-section" id="ms5"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 5</div><div class="m-section-title">Understanding the Results</div></div></div>
+    <div class="m-h2">5.1 &nbsp; When a card shows $0</div>
+    <p class="m-body">Not all five cards will show a non-zero value for every booking. This is expected behaviour:</p>
+    <p class="m-bullet">If the introducer is <strong>L1</strong>, only the L1 card will show earnings. L2 and L3 will be $0.</p>
+    <p class="m-bullet">If the introducer is <strong>L2</strong>, L2 shows full earnings. L1 shows a secondary cut (Full Sign-Up only). L3 is $0.</p>
+    <p class="m-bullet">If the introducer is <strong>L3</strong>, L3 shows full earnings. Both L1 and L2 show secondary cuts (Full Sign-Up only).</p>
+    <div class="m-h2">5.2 &nbsp; Deposit Only vs Full Sign-Up</div>
+    <p class="m-body">The Status field has the greatest impact on payout amounts:</p>
+    <div class="m-tbl-wrap"><table><thead class="mth-terra"><tr><th></th><th>Deposit Only</th><th>Full Sign-Up</th></tr></thead><tbody>
+      <tr><td><strong>Signature — direct tier</strong></td><td>$200 flat</td><td>$1,000 + 5% of tattoo price</td></tr>
+      <tr><td><strong>Premium — direct tier</strong></td><td>$100 flat</td><td>$400 + 5% of tattoo price</td></tr>
+      <tr><td><strong>Secondary tiers (L1/L2 upline)</strong></td><td>$0 — not triggered</td><td>$300 + 2% (Sig.) / $150 (Prem.)</td></tr>
+    </tbody></table></div>
+    <div class="m-h2">5.3 &nbsp; Company Net Revenue</div>
+    <p class="m-body">Calculated as gross studio revenue minus all affiliate commissions. Gross revenue by service and status:</p>
+    <p class="m-bullet">Signature Full Sign-Up: $6,000 + tattoo price</p>
+    <p class="m-bullet">Premium Full Sign-Up: $2,000 + tattoo price</p>
+    <p class="m-bullet">Signature Deposit Only: $500 flat</p>
+    <p class="m-bullet">Premium Deposit Only: $300 flat</p>
+
+    <!-- S6 -->
+    <div class="m-section" id="ms6"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 6</div><div class="m-section-title">Saving &amp; Managing Client Records</div></div></div>
+    <p class="m-body">The Saved Clients table lets you build a log of multiple clients within a single session. Entries for the same client name are automatically grouped, with totals shown at the group level.</p>
+    <div class="m-h2">How grouping works</div>
+    <p class="m-body">When you save more than one entry under the same client name, the table consolidates them into a single grouped row. The grouped row displays the <strong>sum</strong> of all individual values — Price, L1, L2, L3, Total Payout, and Net Revenue — giving you an instant combined total for that client. A teal number badge shows how many entries are in the group.</p>
+    <div class="m-tbl-wrap"><table><thead class="mth-teal"><tr><th>Action</th><th>How</th></tr></thead><tbody>
+      <tr><td><strong>Save a record</strong></td><td>Click <strong>+ Save Current</strong> — the entry is added and automatically grouped if the client name already exists.</td></tr>
+      <tr><td><strong>Expand a group</strong></td><td>Click the grouped row to reveal all individual entries underneath. The arrow rotates to show the group is open.</td></tr>
+      <tr><td><strong>Collapse a group</strong></td><td>Click the grouped row again to hide the individual entries and return to the summary view.</td></tr>
+      <tr><td><strong>Remove one entry</strong></td><td>Expand the group, then click the <strong>Remove</strong> button on the individual entry you want to delete. If only one entry remains, the group automatically becomes a plain single row.</td></tr>
+      <tr><td><strong>Permanent storage</strong></td><td>Data is not saved between sessions. Screenshot or copy values before closing the browser.</td></tr>
+    </tbody></table></div>
+    <div class="m-cblock mcb-terra">REMINDER: Always record your saved clients before closing the browser tab.</div>
+
+    <!-- S7 -->
+    <div class="m-section" id="ms7"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 7</div><div class="m-section-title">Payout Logic Reference</div></div></div>
+    <p class="m-body">Complete reference of all payout rules. All values in USD. The % values refer to a percentage of the tattoo price — e.g. 5% on a $3,000 tattoo adds $150 to the base.</p>
+    <div class="m-tbl-wrap"><table><thead class="mth-charcoal"><tr><th>Tier</th><th>Service</th><th>Status</th><th>Direct Earner</th><th>L1 Upline</th><th>L2 Upline</th></tr></thead><tbody>
+      <tr><td><strong>L1</strong></td><td>Signature</td><td>Deposit Only</td><td>$200</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>L1</strong></td><td>Signature</td><td>Full Sign-Up</td><td>$1,000 + 5%</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>L1</strong></td><td>Premium</td><td>Deposit Only</td><td>$100</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>L1</strong></td><td>Premium</td><td>Full Sign-Up</td><td>$400 + 5%</td><td>—</td><td>—</td></tr>
+      <tr><td><strong>L2</strong></td><td>Signature</td><td>Deposit Only</td><td>$200</td><td>$0</td><td>—</td></tr>
+      <tr><td><strong>L2</strong></td><td>Signature</td><td>Full Sign-Up</td><td>$1,000 + 5%</td><td>$300 + 2%</td><td>—</td></tr>
+      <tr><td><strong>L2</strong></td><td>Premium</td><td>Deposit Only</td><td>$100</td><td>$0</td><td>—</td></tr>
+      <tr><td><strong>L2</strong></td><td>Premium</td><td>Full Sign-Up</td><td>$400 + 5%</td><td>$150</td><td>—</td></tr>
+      <tr><td><strong>L3</strong></td><td>Signature</td><td>Deposit Only</td><td>$200</td><td>$0</td><td>$0</td></tr>
+      <tr><td><strong>L3</strong></td><td>Signature</td><td>Full Sign-Up</td><td>$1,000 + 5%</td><td>$300 + 2%</td><td>$300 + 2%</td></tr>
+      <tr><td><strong>L3</strong></td><td>Premium</td><td>Deposit Only</td><td>$100</td><td>$0</td><td>$0</td></tr>
+      <tr><td><strong>L3</strong></td><td>Premium</td><td>Full Sign-Up</td><td>$400 + 5%</td><td>$150</td><td>$150</td></tr>
+    </tbody></table></div>
+
+    <!-- S8 -->
+    <div class="m-section" id="ms8"><div class="m-section-bar"></div><div class="m-section-body"><div class="m-section-num">Section 8</div><div class="m-section-title">Frequently Asked Questions</div></div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: Can I use the calculator on a phone or tablet?</div><div class="m-faq-a">A: Yes. The layout adapts to smaller screens. For the best experience on mobile, view it in landscape orientation.</div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: Why are L2 and L3 showing $0 when the introducer is L1?</div><div class="m-faq-a">A: This is correct. An L1 introducer is the only person in the chain for that booking. No secondary commissions are triggered because there are no higher-tier introducers above them.</div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: Why does changing the tattoo price have no effect on Deposit Only bookings?</div><div class="m-faq-a">A: Deposit Only bookings always pay a fixed flat fee regardless of the tattoo price. The percentage-based addition only applies to Full Sign-Up bookings where the client has paid in full.</div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: Why is the L1 card showing a value even though the introducer is L3?</div><div class="m-faq-a">A: When the direct introducer is L3, both L1 and L2 in the chain receive a secondary upline commission — but only on Full Sign-Up bookings. If the status is Deposit Only, those secondary cards will correctly show $0.</div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: What is the difference between Signature and Premium payouts?</div><div class="m-faq-a">A: Signature services carry higher base commissions. On a Deposit Only booking, Signature pays $200 versus $100 for Premium. On a Full Sign-Up, Signature pays $1,000 base plus 5%, while Premium pays $400 base plus 5%. Secondary upline commissions also differ: Signature pays $300 + 2% while Premium pays a flat $150.</div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: Can a booking ever result in all five cards showing non-zero values?</div><div class="m-faq-a">A: Yes — but only when the introducer is L3 and the booking is a Full Sign-Up. In that scenario L3 earns the direct commission, both L2 and L1 earn upline secondary commissions, the Total Payout shows the combined sum, and Company Net Revenue shows what remains.</div></div>
+    <div class="m-faq"><div class="m-faq-q">Q: If I save multiple scenarios for the same client, how does the table handle them?</div><div class="m-faq-a">A: The table automatically groups all entries under the same client name into a single row, showing the combined totals for that client. Click the grouped row to expand it and see each individual entry — each with its own Remove button. This is useful when a client has multiple bookings or when you want to compare different scenarios side by side before committing to a record.</div></div>
+
+    <div class="m-footer"><p>End of User Manual &nbsp;·&nbsp; Affiliate Payout Calculator &nbsp;·&nbsp; Tattoo Studio Operations</p></div>
+  </div>
+</div>
+
+<script>
+  let saved = [], nextId = 1;
+
+  function calc(service, status, tier, price) {
+    const sig = service === 'Signature', full = status === 'Full Sign-Up';
+    let l1 = 0, l2 = 0, l3 = 0;
+    if (tier === 'L1') {
+      l1 = full ? (sig ? 1000 + price*.05 : 400 + price*.05) : (sig ? 200 : 100);
+    } else if (tier === 'L2') {
+      l2 = full ? (sig ? 1000 + price*.05 : 400 + price*.05) : (sig ? 200 : 100);
+      if (full) l1 = sig ? 300 + price*.02 : 150;
+    } else {
+      l3 = full ? (sig ? 1000 + price*.05 : 400 + price*.05) : (sig ? 200 : 100);
+      if (full) { l1 = sig ? 300 + price*.02 : 150; l2 = sig ? 300 + price*.02 : 150; }
+    }
+    const payout = l1 + l2 + l3;
+    const gross = full ? (sig ? 6000 : 2000) + price : (sig ? 500 : 300);
+    return { l1, l2, l3, payout, net: gross - payout };
+  }
+
+  function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+  function getInputs() {
+    return {
+      name:    document.getElementById('clientName').value.trim(),
+      service: document.getElementById('service').value,
+      status:  document.getElementById('status').value,
+      tier:    document.getElementById('tier').value,
+      price:   parseFloat(document.getElementById('price').value) || 0,
+    };
+  }
+
+  function updateResults() {
+    const { service, status, tier, price } = getInputs();
+    const r = calc(service, status, tier, price);
+    document.getElementById('r-l1').textContent     = fmt(r.l1);
+    document.getElementById('r-l2').textContent     = fmt(r.l2);
+    document.getElementById('r-l3').textContent     = fmt(r.l3);
+    document.getElementById('r-payout').textContent = fmt(r.payout);
+    document.getElementById('r-net').textContent    = fmt(r.net);
+  }
+
+  function saveClient() {
+    const { name, service, status, tier, price } = getInputs();
+    const r = calc(service, status, tier, price);
+    saved.push({ id: nextId++, name: name || 'Unnamed', service, status, tier, price, ...r });
+    renderTable();
+  }
+
+  const expanded = {};
+
+  function removeClient(id) {
+    saved = saved.filter(c => c.id !== id);
+    renderTable();
+  }
+
+  function toggleGroup(name) {
+    expanded[name] = !expanded[name];
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    if (!saved.length) {
+      tbody.innerHTML = '<tr><td colspan="11"><div class="empty"><span>No Saved Clients</span>Fill in the form above and click "Save Current" to record a scenario.</div></td></tr>';
+      return;
+    }
+
+    const groups = {};
+    saved.forEach(c => { if (!groups[c.name]) groups[c.name] = []; groups[c.name].push(c); });
+
+    let html = '';
+    Object.entries(groups).forEach(([name, entries]) => {
+      const single = entries.length === 1;
+      const isOpen = !!expanded[name];
+      const tL1     = entries.reduce((s,e) => s + e.l1,     0);
+      const tL2     = entries.reduce((s,e) => s + e.l2,     0);
+      const tL3     = entries.reduce((s,e) => s + e.l3,     0);
+      const tPayout = entries.reduce((s,e) => s + e.payout, 0);
+      const tNet    = entries.reduce((s,e) => s + e.net,    0);
+      const tPrice  = entries.reduce((s,e) => s + e.price,  0);
+      const safeN   = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+      if (single) {
+        const c = entries[0];
+        html += `<tr class="group-row single">
+          <td>${c.name}</td><td>${c.service}</td><td>${c.status}</td>
+          <td><span class="tier-badge tier-${c.tier}">${c.tier}</span></td>
+          <td>${fmt(c.price)}</td>
+          <td style="color:var(--teal);font-weight:600">${fmt(c.l1)}</td>
+          <td style="color:var(--terra);font-weight:600">${fmt(c.l2)}</td>
+          <td style="color:var(--muted);font-weight:600">${fmt(c.l3)}</td>
+          <td>${fmt(c.payout)}</td>
+          <td style="font-weight:700">${fmt(c.net)}</td>
+          <td><button class="del-btn" onclick="removeClient(${c.id})">Remove</button></td>
+        </tr>`;
+      } else {
+        html += `<tr class="group-row" onclick="toggleGroup('${safeN}')">
+          <td><span class="toggle-arrow ${isOpen?'open':''}">▶</span>${name}<span class="count-pill">${entries.length}</span></td>
+          <td colspan="3" style="color:var(--muted);font-size:11px;font-weight:400">${isOpen?'collapse ▴':'expand ▾ — totals shown'}</td>
+          <td>${fmt(tPrice)}</td>
+          <td style="color:var(--teal);font-weight:700">${fmt(tL1)}</td>
+          <td style="color:var(--terra);font-weight:700">${fmt(tL2)}</td>
+          <td style="color:var(--muted);font-weight:700">${fmt(tL3)}</td>
+          <td style="font-weight:700">${fmt(tPayout)}</td>
+          <td style="font-weight:700">${fmt(tNet)}</td>
+          <td></td>
+        </tr>`;
+        entries.forEach(c => {
+          html += `<tr class="sub-row ${isOpen?'':'hidden'}">
+            <td>${c.name}</td><td>${c.service}</td><td>${c.status}</td>
+            <td><span class="tier-badge tier-${c.tier}">${c.tier}</span></td>
+            <td>${fmt(c.price)}</td>
+            <td style="color:var(--teal)">${fmt(c.l1)}</td>
+            <td style="color:var(--terra)">${fmt(c.l2)}</td>
+            <td style="color:var(--muted)">${fmt(c.l3)}</td>
+            <td>${fmt(c.payout)}</td>
+            <td style="font-weight:600">${fmt(c.net)}</td>
+            <td><button class="del-btn" onclick="event.stopPropagation();removeClient(${c.id})">Remove</button></td>
+          </tr>`;
+        });
+      }
+    });
+    tbody.innerHTML = html;
+  }
+
+  function toggleManual() {
+    const panel = document.getElementById('manual-panel');
+    const btn   = document.querySelector('.manual-btn');
+    const isOpen = panel.classList.toggle('open');
+    btn.textContent = isOpen ? 'User Manual ↑' : 'User Manual ↓';
+    if (isOpen) {
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  ['clientName','price'].forEach(id => document.getElementById(id).addEventListener('input', updateResults));
+  ['service','status','tier'].forEach(id => document.getElementById(id).addEventListener('change', updateResults));
+  updateResults();
+  renderTable();
+</script>
+</body>
+</html>
