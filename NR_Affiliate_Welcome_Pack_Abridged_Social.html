@@ -374,7 +374,7 @@
       margin-bottom: 10px; line-height: 1.15;
     }
 
-    .step-desc { font-size: 12px; color: var(--text); line-height: 1.85; letter-spacing: 0.04em; max-width: 560px; }
+    .step-desc { font-size: 12px; color: var(--text); line-height: 1.85; letter-spacing: 0.04em; max-width: 100%; }
 
     /* ── HOOKS ── */
     .hooks-masonry {
@@ -722,11 +722,14 @@
       .pq-text { font-size: clamp(16px, 5vw, 22px); }
 
       .steps { gap: 0; }
-      .step { grid-template-columns: 56px 1fr; }
-      .step-body { padding: 24px 0 36px 16px; }
-      .step-title { font-size: 16px; }
-      .step-desc { font-size: 11px; }
-      .step-circle { width: 36px; height: 36px; font-size: 15px; }
+      .step { grid-template-columns: 48px 1fr; width: 100%; overflow: hidden; }
+      .step-idx { padding: 20px 0; min-width: 48px; }
+      .step-circle { width: 32px; height: 32px; font-size: 14px; flex-shrink: 0; }
+      .step-body { padding: 20px 0 32px 12px; min-width: 0; overflow: hidden; }
+      .step-title { font-size: 15px; letter-spacing: 0.03em; }
+      .step-desc { font-size: 11px; max-width: 100%; word-wrap: break-word; overflow-wrap: break-word; }
+      .steps { width: 100%; overflow: hidden; }
+      .note { word-wrap: break-word; overflow-wrap: break-word; }
 
       .hooks-masonry { columns: 1; }
       .hook { padding: 24px 20px; }
