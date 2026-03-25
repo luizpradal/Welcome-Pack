@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>No Regrets Studios — Affiliate Welcome Pack</title>
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/beaufort-pro');
+    @import url('https://fonts.cdnfonts.com/css/special-gothic-expanded');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:      #0B0B09;
+      --charcoal:   #181816;
+      --charcoal2:  #222220;
+      --sand:       #C5B49A;
+      --sand-light: #DDD0BA;
+      --sand-dim:   #7A6E5A;
+      --stone:      #E8E4DA;
+      --grey-mid:   #8A8A86;
+      --teal:       #C25A36;
+      --teal-lt:    #D96E48;
+      --teal-dim:   #8B3D24;
+      --orange:     #2A6B78;
+      --orange-lt:  #3A8C9C;
+      --rule:       rgba(197,180,154,0.14);
+      --rule-or:    rgba(194,90,54,0.3);
+      --text:       #C0BCB2;
+      --text-dim:   #78766E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--stone);
+      font-family: 'Special Gothic Expanded', 'Special Gothic Expanded', 'Special Gothic Expanded One', Impact, 'Arial Narrow', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999;
+    }
+
+    /* ── FONTS ── */
+    .serif {
+      font-family: 'Beaufort Pro', 'Beaufort', 'Trajan Pro', Georgia, serif;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      height: 52px; padding: 0 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(11,11,9,0.96); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--sand);
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 8.5px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--orange-lt); }
+
+    /* ── LEVEL TABS ── */
+    .level-bar {
+      position: sticky; top: 52px; z-index: 199;
+      background: var(--charcoal); border-bottom: 1px solid var(--rule);
+      padding: 0 56px; display: flex; align-items: center;
+    }
+    .level-lbl {
+      font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--sand-dim); margin-right: 28px; white-space: nowrap;
+    }
+    .level-btn {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-dim); padding: 15px 22px 13px; cursor: pointer; transition: all 0.2s;
+    }
+    .level-btn:hover { color: var(--stone); }
+    .level-btn.active { color: var(--orange-lt); border-bottom-color: var(--orange); }
+    .ltag {
+      font-family: 'Special Gothic Expanded', 'Special Gothic Expanded One', sans-serif;
+      font-size: 7.5px; letter-spacing: 0.1em;
+      background: var(--orange-dim); color: #fff;
+      padding: 1px 6px; margin-left: 6px; vertical-align: middle;
+    }
+    .level-btn.active .ltag { background: var(--orange); }
+
+    /* ── VISIBILITY ── */
+    [data-level] { display: none; }
+    .show-l1 [data-level="1"], .show-l2 [data-level="2"], .show-l3 [data-level="3"] { display: block; }
+    .lv { display: none; }
+    .show-l1 .lv-1, .show-l2 .lv-2, .show-l3 .lv-3 { display: inline; }
+
+    /* ════════════════════════════
+       HERO — MAGAZINE COVER FEEL
+    ════════════════════════════ */
+    .hero {
+      min-height: 96vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Left panel: big type */
+    .hero-left {
+      padding: 80px 64px 80px 56px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      border-right: 1px solid var(--rule);
+      position: relative; z-index: 1;
+    }
+
+    /* Right panel: orange fill with badge */
+    .hero-right {
+      background: var(--orange);
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 56px 56px 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 340px; height: 340px;
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 50%;
+    }
+    .hero-right::after {
+      content: '';
+      position: absolute; bottom: -60px; left: -60px;
+      width: 260px; height: 260px;
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 50%;
+    }
+
+    .hero-eyebrow {
+      font-size: 8.5px; letter-spacing: 0.38em; text-transform: uppercase;
+      color: var(--sand-dim); margin-bottom: 32px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--orange); flex-shrink: 0; }
+
+    .hero-title {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: clamp(60px, 8.5vw, 118px);
+      font-weight: 700; line-height: 0.88;
+      letter-spacing: 0.01em; text-transform: uppercase;
+      margin-bottom: 44px;
+    }
+
+    .hero-tagline {
+      font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--text-dim); line-height: 2.4;
+      border-top: 1px solid var(--rule); padding-top: 24px;
+    }
+
+    /* Right side content */
+    .hero-issue {
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(11,11,9,0.5); position: relative; z-index: 1;
+    }
+
+    .hero-badge-area {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 32px;
+    }
+
+    .hero-badge-num {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: clamp(100px, 16vw, 220px);
+      font-weight: 700; line-height: 1;
+      color: rgba(11,11,9,0.2);
+      letter-spacing: -0.02em;
+      position: absolute; bottom: 56px; right: 48px;
+    }
+
+    .hero-badge-box {
+      border: 1px solid rgba(11,11,9,0.3);
+      padding: 20px 28px; display: inline-block;
+    }
+
+    .hbb-level {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(11,11,9,0.6); margin-bottom: 4px;
+    }
+
+    .hbb-title {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 22px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--black);
+    }
+
+    /* ════════════════════════════
+       SECTION WRAPPER
+    ════════════════════════════ */
+    .section { border-top: 1px solid var(--rule); }
+
+    /* ── SPREAD: large label left, content right ── */
+    .spread {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+    }
+
+    .spread-label {
+      padding: 72px 40px 72px 56px;
+      border-right: 1px solid var(--rule);
+      display: flex; flex-direction: column; justify-content: flex-start;
+      gap: 16px; position: sticky; top: 104px; align-self: start;
+    }
+
+    .spread-num {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 80px; font-weight: 700; line-height: 1;
+      color: var(--orange-dim); letter-spacing: -0.02em;
+    }
+
+    .spread-tag {
+      font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--orange); writing-mode: vertical-rl;
+      text-orientation: mixed; transform: rotate(180deg);
+      margin-top: 8px;
+    }
+
+    .spread-body {
+      padding: 72px 80px 80px 72px;
+    }
+
+    .spread-title {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: clamp(36px, 4vw, 58px);
+      font-weight: 700; line-height: 0.95;
+      letter-spacing: 0.03em; text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    .spread-title .accent { color: var(--orange-lt); }
+
+    .spread-intro {
+      font-size: 12px; color: var(--text); line-height: 2.0;
+      letter-spacing: 0.04em; margin-bottom: 52px;
+      max-width: 560px;
+    }
+
+    /* ── PULLQUOTE (large italic statement) ── */
+    .pullquote {
+      grid-column: 1 / -1;
+      background: var(--charcoal);
+      padding: 60px 80px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 3px 1fr;
+      gap: 40px; align-items: center;
+    }
+
+    .pq-bar { background: var(--orange); width: 3px; align-self: stretch; }
+
+    .pq-text {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 400; font-style: italic;
+      line-height: 1.45; color: var(--stone);
+    }
+
+    .pq-label {
+      font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 14px; display: block;
+    }
+
+    /* ── SERVICE GRID ── */
+    .svc-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--rule);
+      border: 1px solid var(--rule); margin-bottom: 48px;
+    }
+
+    .svc-card {
+      background: var(--charcoal2); padding: 40px 44px;
+      position: relative; overflow: hidden;
+    }
+
+    .svc-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 3px; background: var(--orange);
+    }
+
+    .svc-glyph {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 28px; color: var(--orange);
+      margin-bottom: 16px; line-height: 1;
+    }
+
+    .svc-name {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 20px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+    }
+
+    .svc-price {
+      font-size: 8.5px; letter-spacing: 0.22em;
+      color: var(--orange-lt); text-transform: uppercase; margin-bottom: 18px;
+    }
+
+    .svc-desc { font-size: 11.5px; color: var(--text); line-height: 1.85; letter-spacing: 0.03em; }
+
+    /* ── ASYMMETRIC 2-COL ── */
+    .asymmetric {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 64px; align-items: start;
+      margin-bottom: 52px;
+    }
+
+    .asymmetric.flip { grid-template-columns: 1fr 1.6fr; }
+
+    /* ── LEVEL CARDS ── */
+    .level-cards { display: flex; flex-direction: column; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .lc { background: var(--charcoal2); padding: 28px 32px; display: grid; grid-template-columns: 56px 1fr; gap: 24px; align-items: start; transition: background 0.2s; }
+    .lc:hover { background: rgba(42,107,120,0.06); }
+    .lc.active-card { background: rgba(42,107,120,0.08); }
+    .lc-num {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 40px; font-weight: 700; color: var(--orange-dim); line-height: 1;
+    }
+    .lc.active-card .lc-num { color: var(--orange); }
+    .lc-title { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand); margin-bottom: 12px; }
+    .lc-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .lc-items li { font-size: 11px; color: var(--text); display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; letter-spacing: 0.03em; }
+    .lc-items li::before { content: '—'; color: var(--orange-dim); flex-shrink: 0; }
+
+    /* ── NOTE BOXES ── */
+    .note {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 20px; margin-top: 24px;
+      font-size: 11.5px; color: var(--text); line-height: 1.75; letter-spacing: 0.04em;
+    }
+    .note.info { background: rgba(42,107,120,0.07); border-left: 3px solid var(--orange); }
+    .note.warn { background: rgba(194,90,54,0.07); border-left: 3px solid var(--teal); }
+    .note-icon {
+      flex-shrink: 0; width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif; font-size: 11px; font-weight: 700; color: #fff;
+    }
+    .note.info .note-icon { background: var(--orange); }
+    .note.warn .note-icon { background: var(--teal); }
+    .note strong { color: var(--stone); font-weight: 400; }
+
+    /* ── STEPS — large indexed list ── */
+    .steps { display: flex; flex-direction: column; }
+
+    .step {
+      display: grid; grid-template-columns: 80px 1fr;
+      border-bottom: 1px solid var(--rule);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .step:first-child { border-top: 1px solid var(--rule); }
+    .step.visible { opacity: 1; transform: translateY(0); }
+
+    .step-idx {
+      padding: 32px 0 32px 0;
+      display: flex; align-items: flex-start; justify-content: center;
+      border-right: 1px solid var(--rule);
+    }
+
+    .step-circle {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 22px; font-weight: 700;
+      color: var(--orange-lt);
+      width: 42px; height: 42px; border: 1px solid var(--orange);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .step-body { padding: 32px 0 32px 40px; }
+
+    .step-title {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 22px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-bottom: 10px; line-height: 1.15;
+    }
+
+    .step-desc { font-size: 12px; color: var(--text); line-height: 1.85; letter-spacing: 0.04em; max-width: 560px; }
+
+    /* ── HOOKS ── */
+    .hooks-masonry {
+      columns: 2; column-gap: 1px;
+      background: var(--rule); border: 1px solid var(--rule);
+      margin-bottom: 48px;
+    }
+
+    .hook {
+      background: var(--charcoal2); padding: 32px 36px;
+      break-inside: avoid; border-bottom: 1px solid var(--rule);
+      transition: background 0.2s;
+    }
+
+    .hook:hover { background: rgba(42,107,120,0.05); }
+    .hook.avoid-card { background: rgba(194,90,54,0.06); }
+    .hook.avoid-card:hover { background: rgba(194,90,54,0.1); }
+
+    .hook-lbl {
+      font-size: 7.5px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--orange-lt); margin-bottom: 14px;
+    }
+    .hook.avoid-card .hook-lbl { color: var(--teal-lt); }
+
+    .hook-text {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 16px; font-weight: 400; font-style: italic;
+      line-height: 1.6; color: var(--stone);
+    }
+
+    .hook-note {
+      font-size: 10.5px; color: var(--text-dim);
+      margin-top: 14px; padding-top: 12px;
+      border-top: 1px solid var(--rule); line-height: 1.7; letter-spacing: 0.03em;
+    }
+
+    .avoid-lines { font-size: 11px; color: var(--text); line-height: 2.3; letter-spacing: 0.04em; }
+
+    /* ── DM SCRIPTS ── */
+    .dm-box { border: 1px solid var(--rule); }
+    .dm-head {
+      font-size: 8.5px; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--orange-lt); padding: 14px 28px;
+      border-bottom: 1px solid var(--rule);
+      background: rgba(42,107,120,0.05);
+    }
+    .dm-row { display: grid; grid-template-columns: 190px 1fr; gap: 28px; padding: 20px 28px; align-items: start; }
+    .dm-row:not(:last-child) { border-bottom: 1px solid var(--rule); }
+    .dm-q { font-size: 10.5px; color: var(--sand-dim); font-style: italic; letter-spacing: 0.04em; line-height: 1.6; }
+    .dm-a { font-size: 11.5px; color: var(--text); line-height: 1.85; letter-spacing: 0.04em; }
+
+    /* ── REWARDS ── */
+    .rewards-split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: var(--rule); border: 1px solid var(--rule);
+    }
+
+    .reward {
+      background: var(--charcoal2); padding: 48px 44px;
+      position: relative; overflow: hidden;
+    }
+
+    .reward::before {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 160px; height: 160px;
+      border-top: 1px solid rgba(42,107,120,0.12);
+      border-left: 1px solid rgba(42,107,120,0.12);
+    }
+
+    .reward-big {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 80px; font-weight: 700;
+      color: var(--orange-dim); line-height: 1;
+      margin-bottom: 8px; letter-spacing: -0.02em;
+    }
+
+    .reward-lbl { font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--orange); margin-bottom: 28px; }
+
+    .reward-name {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 24px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 24px;
+    }
+
+    .reward-trigger-lbl { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange-dim); margin-bottom: 10px; }
+
+    .reward-milestone {
+      background: rgba(42,107,120,0.08); border-left: 2px solid var(--orange);
+      padding: 11px 16px; font-size: 11.5px; color: var(--text);
+      margin-bottom: 8px; line-height: 1.6; letter-spacing: 0.04em;
+      position: relative; z-index: 1;
+    }
+    .reward-milestone strong { color: var(--stone); font-weight: 400; }
+
+    .reward-or { font-size: 8.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange-dim); padding: 3px 16px; margin-bottom: 8px; display: block; }
+
+    .reward-small { font-size: 10.5px; color: var(--text-dim); margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--rule); line-height: 1.8; letter-spacing: 0.04em; position: relative; z-index: 1; }
+
+    /* ── RULES ── */
+    .rules-full {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    }
+
+    .rules-col { background: var(--charcoal2); padding: 44px 48px; }
+
+    .rcol-head {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 28px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--rule);
+    }
+
+    .rules-col.dos .rcol-head { color: var(--orange-lt); }
+    .rules-col.donts .rcol-head { color: var(--teal-lt); }
+
+    .rule-list { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+
+    .rule-item { font-size: 12px; color: var(--text); display: flex; gap: 14px; align-items: flex-start; line-height: 1.7; letter-spacing: 0.04em; }
+
+    .rm {
+      flex-shrink: 0; width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; margin-top: 1px;
+    }
+
+    .dos .rm { background: rgba(42,107,120,0.18); color: var(--orange-lt); }
+    .donts .rm { background: rgba(194,90,54,0.18); color: var(--teal-lt); }
+
+    /* ── FOOTER ── */
+    .footer {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--rule);
+    }
+
+    .footer-left {
+      padding: 56px 56px;
+      border-right: 1px solid var(--rule);
+    }
+
+    .footer-logo {
+      font-family: 'Beaufort Pro', 'Beaufort', Georgia, serif;
+      font-size: 32px; font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .footer-logo span { color: var(--orange); }
+
+    .footer-addr { font-size: 9.5px; letter-spacing: 0.12em; color: var(--text-dim); line-height: 2; }
+
+    .footer-right {
+      padding: 56px 56px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+
+    .footer-conf { font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--sand-dim); display: block; margin-bottom: 8px; }
+    .footer-meta { font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); line-height: 2; }
+
+    /* ── RUNNING CHAPTER MARKER ── */
+    .chapter-marker {
+      font-size: 7.5px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--orange-dim); padding: 10px 56px;
+      background: var(--charcoal); border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .chapter-marker::before { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .nav, .level-bar { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { min-height: 280px; }
+      .hero-badge-num { font-size: 120px; }
+      .spread { grid-template-columns: 1fr; }
+      .spread-label { position: static; padding: 40px 20px 0; flex-direction: row; align-items: center; border-right: none; border-bottom: 1px solid var(--rule); }
+      .spread-tag { writing-mode: horizontal-tb; transform: none; }
+      .spread-body { padding: 40px 20px 60px; }
+      .svc-grid, .asymmetric, .asymmetric.flip, .level-cards, .hooks-masonry, .rewards-split, .rules-full, .footer { grid-template-columns: 1fr; columns: 1; }
+      .pullquote { padding: 40px 24px; }
+      .dm-row { grid-template-columns: 1fr; gap: 6px; }
+      .footer-left { border-right: none; border-bottom: 1px solid var(--rule); }
+      .step-body { padding: 28px 0 28px 24px; }
+    }
+  </style>
+</head>
+<body class="show-l1">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <span style="font-family: 'Beaufort Pro', 'Beaufort', 'Trajan Pro', Georgia, serif; font-size: 15px; font-weight: 700; letter-spacing: 0.2em; color: #FFFFFF;">No Regrets<sup style="font-size: 8px; letter-spacing: 0; vertical-align: super;">™</sup></span>
+    <ul class="nav-links">
+      <li><a href="#about">The Studio</a></li>
+      <li><a href="#level">The Pack</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#hooks">Hooks</a></li>
+      <li><a href="#rewards">Rewards</a></li>
+      <li><a href="#rules">Rules</a></li>
+    </ul>
+  </nav>
+
+  <!-- LEVEL BAR -->
+  <div class="level-bar">
+    <span class="level-lbl">Your Level</span>
+    <button class="level-btn active" data-select="1">Level 1 <span class="ltag">Senior</span></button>
+    <button class="level-btn" data-select="2">Level 2 <span class="ltag">Mid</span></button>
+    <button class="level-btn" data-select="3">Level 3 <span class="ltag">Entry</span></button>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <header class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Affiliate Welcome Pack</div>
+      <h1 class="hero-title serif">Welcome<br>to the<br>Pack.</h1>
+      <div class="hero-tagline">
+        Bespoke tattoo design &nbsp;·&nbsp; Your referral &nbsp;·&nbsp; Your commission<br>
+        No Regrets Studios — U.S. Locations
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-issue">No Regrets Studios · Affiliate Programme</div>
+      <div class="hero-badge-area">
+        <div class="hero-badge-box">
+          <div class="hbb-level">Level <span class="lv lv-1">01</span><span class="lv lv-2">02</span><span class="lv lv-3">03</span></div>
+          <div class="hbb-title"><span class="lv lv-1">Senior Affiliate</span><span class="lv lv-2">Affiliate</span><span class="lv lv-3">Entry Affiliate</span></div>
+        </div>
+      </div>
+      <div class="hero-badge-num lv lv-1">1</div>
+      <div class="hero-badge-num lv lv-2">2</div>
+      <div class="hero-badge-num lv lv-3">3</div>
+    </div>
+  </header>
+
+  <!-- ═══ 01 THE STUDIO ═══ -->
+  <div class="chapter-marker">01 — The Studio</div>
+  <section class="section" id="about">
+    <div class="spread">
+      <div class="spread-label">
+        <div class="spread-num serif">01</div>
+        <div class="spread-tag">The Studio</div>
+      </div>
+      <div class="spread-body">
+        <h2 class="spread-title serif fade-up">What You're<br>Introducing<br><span class="accent">People To</span></h2>
+        <p class="spread-intro fade-up">No Regrets Studios is a design-led tattoo studio built around a simple idea: no one should regret their tattoo. Every client sees their design on their body — before a single drop of ink.</p>
+
+        <div class="svc-grid fade-up">
+          <div class="svc-card">
+            <div class="svc-glyph serif">✦</div>
+            <div class="svc-name serif">Signature Design Service</div>
+            <div class="svc-price">$6,000 · Finance available via Affirm</div>
+            <div class="svc-desc">An in-person, fully personalised design-to-tattoo experience. Includes 4–6 dedicated one-hour consultations led by KA$PER and Willie, Photo Booth preview technology, and access to world-class tattoo artists. The client owns their design outright.</div>
+          </div>
+          <div class="svc-card">
+            <div class="svc-glyph serif">◈</div>
+            <div class="svc-name serif">Premium Design Service</div>
+            <div class="svc-price">$2,000 · Remote service</div>
+            <div class="svc-desc">A remote bespoke design service including video consultation, a fully custom design, and the option to be tattooed at No Regrets Studios. Ideal for clients who can't attend in person but want something truly their own.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PULLQUOTE -->
+    <div class="pullquote fade-up">
+      <div class="pq-bar"></div>
+      <div>
+        <span class="pq-label">The Quick Pitch</span>
+        <div class="pq-text serif">"$6,000 bespoke tattoo design service. You own the design. Finance available. See it on your body before any ink. No Regrets."</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 02 THE PACK EXPLAINED ═══ -->
+  <div class="chapter-marker">02 — Your Position</div>
+  <section class="section" id="level">
+    <div class="spread">
+      <div class="spread-label">
+        <div class="spread-num serif">02</div>
+        <div class="spread-tag">The Pack</div>
+      </div>
+      <div class="spread-body">
+        <h2 class="spread-title serif fade-up">The Pack<br><span class="accent">Explained</span></h2>
+        <p class="spread-intro fade-up">Three affiliate levels. Select yours at the top to see content tailored to your tier — here's how the whole network fits together.</p>
+
+        <div class="level-cards fade-up">
+          <div class="lc lv lv-1 active-card">
+            <div class="lc-num serif">1</div>
+            <div>
+              <div class="lc-title">Level 1 — Senior Affiliate</div>
+              <ul class="lc-items">
+                <li>Highest tier in the referral network</li>
+                <li>Introduced directly to the programme by No Regrets / KA$PER</li>
+                <li>Can recruit and onboard Level 2 Affiliates</li>
+                <li>Earns passive commission when your L2s and L3s bring in clients</li>
+                <li>Highest earning potential across the network</li>
+              </ul>
+            </div>
+          </div>
+          <div class="lc lv lv-2 active-card">
+            <div class="lc-num serif">2</div>
+            <div>
+              <div class="lc-title">Level 2 Affiliate</div>
+              <ul class="lc-items">
+                <li>Introduced to the programme by a Level 1 Affiliate</li>
+                <li>Can recruit and onboard Level 3 Affiliates</li>
+                <li>Earns passive commission when your L3s bring in clients</li>
+                <li>Same direct commission rates as Level 1 for your own referrals</li>
+              </ul>
+            </div>
+          </div>
+          <div class="lc lv lv-3 active-card">
+            <div class="lc-num serif">3</div>
+            <div>
+              <div class="lc-title">Level 3 Affiliate</div>
+              <ul class="lc-items">
+                <li>Entry tier — introduced by a Level 2 Affiliate</li>
+                <li>Direct referrals only — no network below your tier</li>
+                <li>Earn commission on every client you introduce directly</li>
+                <li>Full 5% tattoo session commission on all your referrals</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div data-level="1"><div class="note info fade-up"><div class="note-icon">i</div>As a Level 1 Affiliate, you earn passive commission of <strong>$300 + 2% of the tattoo price</strong> for every client brought in by your L2s and L3s on the Signature service, and <strong>$150</strong> per Premium sign-up introduced by your network.</div></div>
+        <div data-level="2"><div class="note info fade-up"><div class="note-icon">i</div>As a Level 2 Affiliate, you earn passive commission of <strong>$300 + 2% of the tattoo price</strong> for every Signature client brought in by your L3s, and <strong>$150</strong> for Premium sign-ups by your L3s.</div></div>
+        <div data-level="3"><div class="note info fade-up"><div class="note-icon">i</div>As a Level 3 Affiliate, your income is from direct referrals only. Every client you personally introduce is yours — and the <strong>5% tattoo commission</strong> follows that client for every session they ever have at No Regrets Studios.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 HOW TO ═══ -->
+  <div class="chapter-marker">03 — The Process</div>
+  <section class="section" id="process">
+    <div class="spread">
+      <div class="spread-label">
+        <div class="spread-num serif">03</div>
+        <div class="spread-tag">Process</div>
+      </div>
+      <div class="spread-body">
+        <h2 class="spread-title serif fade-up">How to Introduce<br>a <span class="accent">Client</span></h2>
+        <p class="spread-intro fade-up">Every referral follows the same six steps. Getting these right protects your commission, your client, and your standing in the network.</p>
+
+        <div class="steps">
+          <div class="step fade-up">
+            <div class="step-idx"><div class="step-circle serif">1</div></div>
+            <div class="step-body">
+              <div class="step-title serif">Qualify First</div>
+              <div class="step-desc">Before you mention a deposit, confirm there's genuine interest. Ask if they've been thinking about a tattoo, whether they've struggled to find the right design, and whether bespoke is something they'd consider. Don't pitch to everyone — pitch to the right people.</div>
+            </div>
+          </div>
+          <div class="step fade-up">
+            <div class="step-idx"><div class="step-circle serif">2</div></div>
+            <div class="step-body">
+              <div class="step-title serif">Tease, Don't Teach</div>
+              <div class="step-desc">Lead with curiosity, not information. The goal is to spark interest, not explain every step. Use the hooks in this pack. Let their questions do the work. When they ask the price, tell them — and mention finance is available.</div>
+              <div class="note warn"><div class="note-icon">!</div>Don't quote specific Affirm rates or terms — direct all finance questions to the No Regrets team.</div>
+            </div>
+          </div>
+          <div class="step fade-up">
+            <div class="step-idx"><div class="step-circle serif">3</div></div>
+            <div class="step-body">
+              <div class="step-title serif">Collect the Deposit</div>
+              <div class="step-desc">Use the approved payment link or bank details provided by No Regrets Studios only. Do not use your own payment systems.</div>
+              <div class="note info" style="margin-top:14px;"><div class="note-icon">$</div>Signature: <strong>$500</strong> non-refundable &nbsp;·&nbsp; Premium: <strong>$300</strong> non-refundable</div>
+            </div>
+          </div>
+          <div class="step fade-up">
+            <div class="step-idx"><div class="step-circle serif">4</div></div>
+            <div class="step-body">
+              <div class="step-title serif">Pass Client Details</div>
+              <div class="step-desc">Send the client's full name and contact details to the No Regrets Studios team within <strong style="color:var(--stone);">24 hours</strong> of collecting the deposit. Your commission is tied to proper client registration — don't delay.</div>
+            </div>
+          </div>
+          <div class="step fade-up">
+            <div class="step-idx"><div class="step-circle serif">5</div></div>
+            <div class="step-body">
+              <div class="step-title serif">Transfer Immediately</div>
+              <div class="step-desc">Transfer the deposit electronically and immediately to No Regrets Studios' designated bank account. Never hold, retain, or delay any deposit funds for any reason.</div>
+              <div class="note warn"><div class="note-icon">!</div>Retaining client deposits is grounds for immediate termination without notice or further commission.</div>
+            </div>
+          </div>
+          <div class="step fade-up">
+            <div class="step-idx"><div class="step-circle serif">6</div></div>
+            <div class="step-body">
+              <div class="step-title serif">Hand Over &amp; Follow the Journey</div>
+              <div class="step-desc">No Regrets Studios takes over the client experience. You receive monthly commission statements. Your 5% tattoo commission applies every time that client returns — for life.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 HOOKS ═══ -->
+  <div class="chapter-marker">04 — Talking Points</div>
+  <section class="section" id="hooks">
+    <div class="spread">
+      <div class="spread-label">
+        <div class="spread-num serif">04</div>
+        <div class="spread-tag">Hooks</div>
+      </div>
+      <div class="spread-body">
+        <h2 class="spread-title serif fade-up">What to Say —<br>How to <span class="accent">Say It</span></h2>
+        <p class="spread-intro fade-up">These hooks are designed to feel natural — not like a pitch. Use them on Stories, in captions, or when someone asks directly. Curiosity always outperforms information.</p>
+
+        <div class="hooks-masonry fade-up">
+          <div class="hook">
+            <div class="hook-lbl">The Fear Angle · For first-timers</div>
+            <div class="hook-text serif">"The reason most people don't get a tattoo isn't the pain. It's not knowing what they actually want. This studio fixes that."</div>
+            <div class="hook-note">Works well for followers who've said they'd "love a tattoo but..." — speaks directly to their hesitation.</div>
+          </div>
+          <div class="hook">
+            <div class="hook-lbl">The Regret Angle · Plays into the brand name</div>
+            <div class="hook-text serif">"I found a studio that shows you your tattoo on your body before any ink touches your skin. No guessing. No regrets."</div>
+            <div class="hook-note">The Photo Booth is the most shareable part of the experience — this hook leads directly into that story.</div>
+          </div>
+          <div class="hook">
+            <div class="hook-lbl">The Ownership Angle · The part most people don't know</div>
+            <div class="hook-text serif">"You pay for the design, you own it. You can take it to any tattoo artist in the world. They just happen to have incredible artists themselves."</div>
+            <div class="hook-note">The ownership model is genuinely surprising. Let the reaction be the content.</div>
+          </div>
+          <div class="hook">
+            <div class="hook-lbl">The Bespoke Angle · For anyone tired of generic</div>
+            <div class="hook-text serif">"It's not picking something off a wall. They design something that's actually yours — your idea, your story, your skin."</div>
+            <div class="hook-note">Resonates with anyone who values personal expression. Strong for lifestyle and fashion audiences.</div>
+          </div>
+          <div class="hook">
+            <div class="hook-lbl">The Finance Angle · Removes the price barrier</div>
+            <div class="hook-text serif">"Didn't know you could finance a tattoo design. Actually makes sense — it's art you'll wear forever."</div>
+            <div class="hook-note">Use when price comes up in DMs. Reframes the cost without you having to justify it.</div>
+          </div>
+          <div class="hook avoid-card">
+            <div class="hook-lbl">What to Avoid</div>
+            <div class="avoid-lines">
+              ✗ &nbsp;Don't quote the price unprompted in a post<br>
+              ✗ &nbsp;Don't over-explain — curiosity beats information<br>
+              ✗ &nbsp;Don't sound like an ad — personal observations work<br>
+              ✗ &nbsp;Don't promise outcomes, timelines or availability
+            </div>
+          </div>
+        </div>
+
+        <p class="spread-intro fade-up" style="margin-bottom:20px;">When followers ask — keep it conversational.</p>
+        <div class="dm-box fade-up">
+          <div class="dm-head">DM Response Scripts</div>
+          <div class="dm-row"><div class="dm-q">When they ask what it is</div><div class="dm-a">"So basically it's a $6k bespoke design service — they design something completely custom for you, you get to see it on your body before committing, and you own the design. Finance is available too so it's not all upfront."</div></div>
+          <div class="dm-row"><div class="dm-q">When they say it sounds like a normal studio</div><div class="dm-a">"It's not a normal tattoo studio. They do the whole design journey first — consultation, concept, art direction — then you decide if and when you get tattooed. You're not locked in."</div></div>
+          <div class="dm-row"><div class="dm-q">When they ask about keeping the design</div><div class="dm-a">"Honestly the coolest part is you keep the design no matter what. You could take it anywhere. But their artists are incredible so most people just go with them anyway."</div></div>
+          <div class="dm-row"><div class="dm-q">When they ask about the price</div><div class="dm-a">"It's $6k for the full bespoke service — but they do offer finance so you're not paying it all at once. Think of it like commissioning actual art. You own it permanently."</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 REWARDS ═══ -->
+  <div class="chapter-marker">05 — Perks</div>
+  <section class="section" id="rewards">
+    <div class="spread">
+      <div class="spread-label">
+        <div class="spread-num serif">05</div>
+        <div class="spread-tag">Rewards</div>
+      </div>
+      <div class="spread-body">
+        <h2 class="spread-title serif fade-up">Your <span class="accent">Rewards</span></h2>
+        <p class="spread-intro fade-up">Two separate complimentary tattoo rewards available — one tied to Signature, one tied to Premium. Both are yours to earn independently.</p>
+
+        <div class="rewards-split fade-up">
+          <div class="reward">
+            <div class="reward-big serif">✦</div>
+            <div class="reward-lbl">Signature Reward</div>
+            <div class="reward-name serif">Signature Reward</div>
+            <div class="reward-trigger-lbl">Trigger — whichever comes first</div>
+            <div class="reward-milestone"><strong>5 Signature deposits of $500</strong> transferred to No Regrets Studios</div>
+            <span class="reward-or">— or —</span>
+            <div class="reward-milestone"><strong>1 client</strong> who has signed the $6,000 Signature design agreement</div>
+            <div class="reward-small">One complimentary day tattoo. Non-transferable, valid 12 months from written confirmation. Design agreed with the artist beforehand.</div>
+          </div>
+          <div class="reward">
+            <div class="reward-big serif">◈</div>
+            <div class="reward-lbl">Premium Reward</div>
+            <div class="reward-name serif">Premium Reward</div>
+            <div class="reward-trigger-lbl">Trigger</div>
+            <div class="reward-milestone"><strong>3 clients</strong> who have each signed the $2,000 Premium design agreement</div>
+            <div class="reward-small">Deposits alone do not qualify — clients must have signed the full $2,000 agreement. One complimentary day tattoo. Non-transferable, valid 12 months from written confirmation.</div>
+          </div>
+        </div>
+
+        <div class="note info fade-up" style="margin-top:28px;"><div class="note-icon">i</div>The Signature and Premium rewards are completely separate. Hit both milestones and you earn two complimentary tattoos.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 06 RULES ═══ -->
+  <div class="chapter-marker">06 — Standards</div>
+  <section class="section" id="rules">
+    <div class="spread">
+      <div class="spread-label">
+        <div class="spread-num serif">06</div>
+        <div class="spread-tag">Rules</div>
+      </div>
+      <div class="spread-body">
+        <h2 class="spread-title serif fade-up">The Rules of<br>the <span class="accent">Programme</span></h2>
+        <p class="spread-intro fade-up">Your Agreement is built on trust. These are the non-negotiables — the things that keep your commission intact and your standing in the network secure.</p>
+
+        <div class="rules-full fade-up">
+          <div class="rules-col dos">
+            <div class="rcol-head serif">Always Do</div>
+            <ul class="rule-list">
+              <li class="rule-item"><span class="rm">✓</span>Transfer all deposits to No Regrets immediately and electronically — never hold funds</li>
+              <li class="rule-item"><span class="rm">✓</span>Pass client name and contact details to the team within 24 hours of the deposit</li>
+              <li class="rule-item"><span class="rm">✓</span>Use only Company-approved materials when representing No Regrets Studios</li>
+              <li class="rule-item"><span class="rm">✓</span>Submit all marketing and social content for approval before publishing</li>
+              <li class="rule-item"><span class="rm">✓</span>Direct all finance queries to the No Regrets team — don't quote rates</li>
+              <li class="rule-item"><span class="rm">✓</span>Keep your commission rate and financial terms strictly confidential</li>
+              <li class="rule-item"><span class="rm">✓</span>Dispute any commission statement in writing within 14 days if incorrect</li>
+            </ul>
+          </div>
+          <div class="rules-col donts">
+            <div class="rcol-head serif">Never Do</div>
+            <ul class="rule-list">
+              <li class="rule-item"><span class="rm">✗</span>Offer, promise, or imply discounts or special deals without written approval</li>
+              <li class="rule-item"><span class="rm">✗</span>Make claims about design outcomes, timelines, or artist availability</li>
+              <li class="rule-item"><span class="rm">✗</span>Use the No Regrets Studios name, logo, or brand assets without written approval</li>
+              <li class="rule-item"><span class="rm">✗</span>Refer clients to any competing tattoo studio or brand</li>
+              <li class="rule-item"><span class="rm">✗</span>Quote specific Affirm rates, APR, or finance terms</li>
+              <li class="rule-item"><span class="rm">✗</span>Disclose your commission rates or financial terms to anyone</li>
+              <li class="rule-item"><span class="rm">✗</span>Solicit any NR client for external services — during or for 12 months after</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note warn fade-up" style="margin-top:28px;"><div class="note-icon">!</div>Immediate termination — without notice or further commission — applies to: retention of deposits · misuse of the brand · false representations · unauthorised discounting · any fraudulent or brand-damaging conduct.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="footer-left">
+      <div class="footer-logo serif" style="color:#FFFFFF;">No Regrets<sup style="font-size: 16px; letter-spacing: 0; vertical-align: super;">™</sup></div>
+      <div class="footer-addr">© The Artistic Collective Inc.</div>
+    </div>
+    <div class="footer-right">
+      <span class="footer-conf">Confidential</span>
+      <div class="footer-meta">
+        For affiliate network use only.<br>
+        Not for distribution outside the programme.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Level switcher
+    document.querySelectorAll('.level-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.body.className = document.body.className.replace(/show-l\d/g,'').trim();
+        document.body.classList.add('show-l' + btn.dataset.select);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Scroll animations
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.07 });
+
+    document.querySelectorAll('.fade-up, .step').forEach((el, i) => {
+      if (el.classList.contains('step')) el.style.transitionDelay = (i * 0.06) + 's';
+      obs.observe(el);
+    });
+  </script>
+</body>
+</html>
