@@ -76,6 +76,7 @@
     }
 
     .pack-link:hover { background: rgba(42,107,120,0.1); }
+    .pack-link.calculator:hover { background: rgba(194,90,54,0.08); }
 
     .pack-info { flex: 1; }
 
@@ -104,7 +105,27 @@
       transition: color 0.2s;
     }
 
+    .pack-link.calculator .pack-arrow { color: #C25A36; }
     .pack-link:hover .pack-arrow { color: #3A8C9C; }
+    .pack-link.calculator:hover .pack-arrow { color: #D96E48; }
+
+    .divider {
+      height: 1px;
+      background: rgba(197,180,154,0.14);
+      width: 100%;
+      max-width: 680px;
+      margin: 28px 0 0;
+    }
+
+    .section-label {
+      font-size: 8px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #3A3A38;
+      width: 100%;
+      max-width: 680px;
+      padding: 16px 0 10px;
+    }
 
     .footer-note {
       font-size: 9px;
@@ -113,6 +134,13 @@
       text-align: center;
       margin-top: 48px;
       text-transform: uppercase;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 40px 16px; }
+      .pack-link { padding: 24px 20px; }
+      .pack-name { font-size: 17px; }
+      .pack-desc { font-size: 9px; }
     }
   </style>
 </head>
@@ -135,6 +163,13 @@
       <div class="pack-info">
         <div class="pack-name">Social Media Version</div>
         <div class="pack-desc">Influencer-friendly · Caption bank · Story sequence · Copy buttons · Reward tracker</div>
+      </div>
+      <div class="pack-arrow">→</div>
+    </a>
+    <a class="pack-link calculator" href="NR_Affiliate_Payout_Calculator.html">
+      <div class="pack-info">
+        <div class="pack-name">Payout Calculator</div>
+        <div class="pack-desc">Commission estimator · Signature & Premium · All affiliate levels</div>
       </div>
       <div class="pack-arrow">→</div>
     </a>
